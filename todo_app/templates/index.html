@@ -2,17 +2,73 @@
 {% block title %}Mat's To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-5">To-Do App</h1>
+      <p class="lead" style = "text-align: right; font-style: italic">Life should not be reduced to a to do list</p>
+      <p class="lead" style = "text-align: right; font-style: italic"> ― Rasheed Ogunlaru</p>
     </div>
   </div>
+
+  <form action="/add" method="POST" style="padding: 7px;">
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">Task</label>
+        <input type="text" class="form-control mb-2" size="130" id="Task" placeholder="Describe your task">
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2" style="background-color:#383c44; border-color: gold; border-width: 3px;">Add</button>
+      </div>
+    </div>
+  </form>
+
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h3 style="text-align: left;">Task ID</h3>
+        {% for task in _DEFAULT_TASKS %}
+        <div class="row justify-content-sm-start">
+          <ul style="list-style: none;">
+            <li>{{ task['id']}}</li>
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-sm">
+        <h3 style="text-align: center;">Description</h3>
+        {% for task in _DEFAULT_TASKS %}
+        <div class="row justify-content-center">
+          <ul style="list-style: none;">
+            <li>{{ task['title']}}</li>
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-sm">
+        <h3 style="text-align: center;">Status</h3>
+        {% for task in _DEFAULT_TASKS %}
+        <div class="row justify-content-center">
+          <ul style="list-style: none;">
+            <li>{{ task['status']}}</li>
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-sm">
+        <h3 style="text-align: center;";">Action</h3>
+        {% for task in _DEFAULT_TASKS %}
+        <div class="row justify-content-center">
+          <ul style="list-style: none;">
+            <li>
+              <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px; margin: 1px;" href="/update/{{ task['id'] }}" role="button">Update</a>
+              <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px; margin: 1px;" href="/delete/{{ task['id'] }}" role="button">Delete</a>
+            </li>
+          </ul>
+        </div>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}

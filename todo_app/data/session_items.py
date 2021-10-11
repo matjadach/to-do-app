@@ -1,69 +1,70 @@
 from flask import session
 
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
+_DEFAULT_TASKS = [
+    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo tasks' },
+    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new tasks to be added' }
 ]
 
+new_tasks = []
 
-def get_items():
+def get_tasks():
     """
-    Fetches all saved items from the session.
+    Fetches all saved tasks from the session.
 
     Returns:
-        list: The list of saved items.
+        list: The list of saved tasks.
     """
-    return session.get('items', _DEFAULT_ITEMS.copy())
+    return session.get('tasks', new_tasks.copy()) #no copy here?
 
 
-def get_item(id):
+def get_task(id):
     """
-    Fetches the saved item with the specified ID.
+    Fetches the saved task with the specified ID.
 
     Args:
-        id: The ID of the item.
+        id: The ID of the task.
 
     Returns:
-        item: The saved item, or None if no items match the specified ID.
+        task: The saved task, or None if no tasks match the specified ID.
     """
-    items = get_items()
-    return next((item for item in items if item['id'] == int(id)), None)
+    tasks = get_tasks()
+    return next((task for task in tasks if task['id'] == int(id)), None)
 
 
-def add_item(title):
+def add_task(title):
     """
-    Adds a new item with the specified title to the session.
+    Adds a new task with the specified title to the session.
 
     Args:
-        title: The title of the item.
+        title: The title of the task.
 
     Returns:
-        item: The saved item.
+        task: The saved task.
     """
-    items = get_items()
+    tasks = get_tasks()
 
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
+    # Determine the ID for the task based on that of the previously added task
+    id = tasks[-1]['id'] + 1 if tasks else 0
 
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
+    task = { 'id': id, 'title': title, 'status': 'Not Started' }
 
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
+    # Add the task to the list
+    tasks.append(task)
+    session['tasks'] = tasks
 
-    return item
+    return task
 
 
-def save_item(item):
+def save_task(task):
     """
-    Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
+    Updates an existing task in the session. If no existing task matches the ID of the specified task, nothing is saved.
 
     Args:
-        item: The item to save.
+        task: The task to save.
     """
-    existing_items = get_items()
-    updated_items = [item if item['id'] == existing_item['id'] else existing_item for existing_item in existing_items]
+    existing_tasks = get_tasks()
+    updated_tasks = [task if task['id'] == existing_task['id'] else existing_task for existing_task in existing_tasks]
 
-    session['items'] = updated_items
+    session['tasks'] = updated_tasks
 
-    return item
+    return task
