@@ -14,61 +14,58 @@
     <div class="form-row align-items-center">
       <div class="col-auto">
         <label class="sr-only" for="inlineFormInput">Task</label>
-        <input type="text" class="form-control mb-2" size="130" id="Task" placeholder="Describe your task">
+        <input type="text" name="Add" class="form-control mb-2" size="130" id="Task" placeholder="Describe your task">
       </div>
       <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-2" style="background-color:#383c44; border-color: gold; border-width: 3px;">Add</button>
+        <button type="submit"  class="btn btn-primary mb-2" style="background-color:#383c44; border-color: gold; border-width: 3px;">Add</button>
       </div>
     </div>
   </form>
 
-  
-  <div class="container">
-    <div class="row">
-      <div class="col-sm">
-        <h3 style="text-align: left;">Task ID</h3>
-        {% for task in _DEFAULT_TASKS %}
-        <div class="row justify-content-sm-start">
-          <ul style="list-style: none;">
-            <li>{{ task['id']}}</li>
-          </ul>
-        </div>
-        {% endfor %}
-      </div>
-      <div class="col-sm">
-        <h3 style="text-align: center;">Description</h3>
-        {% for task in _DEFAULT_TASKS %}
-        <div class="row justify-content-center">
-          <ul style="list-style: none;">
-            <li>{{ task['title']}}</li>
-          </ul>
-        </div>
-        {% endfor %}
-      </div>
-      <div class="col-sm">
-        <h3 style="text-align: center;">Status</h3>
-        {% for task in _DEFAULT_TASKS %}
-        <div class="row justify-content-center">
-          <ul style="list-style: none;">
-            <li>{{ task['status']}}</li>
-          </ul>
-        </div>
-        {% endfor %}
-      </div>
-      <div class="col-sm">
-        <h3 style="text-align: center;";">Action</h3>
-        {% for task in _DEFAULT_TASKS %}
-        <div class="row justify-content-center">
-          <ul style="list-style: none;">
-            <li>
-              <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px; margin: 1px;" href="/update/{{ task['id'] }}" role="button">Update</a>
-              <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px; margin: 1px;" href="/delete/{{ task['id'] }}" role="button">Delete</a>
-            </li>
-          </ul>
-        </div>
-          {% endfor %}
-      </div>
+  <div class="btn-toolbar mb-3" role="sort" aria-label="Sort tasks">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+      <button type="button" class="btn btn-secondary" disabled>Sort tasks by: </button>
+      <a href="/sort_id"><button type="button" class="btn btn-secondary">ID</button></a>
+      <a href="/sort_desc"><button type="button" class="btn btn-secondary">Description</button></a>
+      <a href="/sort_status"><button type="button" class="btn btn-secondary">Status</button></a>
     </div>
   </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col" style="text-align: center;">Task ID</th>
+        <th scope="col" style="text-align: center;">Description</th>
+        <th scope="col" style="text-align: center;">Status</th>
+        <th scope="col" style="text-align: center;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <tr>
+        {% if task['status'] == 'Completed' %}
+        <th scope="row" style="text-align: center; color:rgba(44, 75, 13, 0.651);"><s>{{ task['id']}}</s></th>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['title']}}</s></td>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['status']}}</s></td>
+        {% elif task['status'] == 'In progress' %}
+        <th scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['id']}}</th>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['title']}}</td>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['status']}}</td>
+        {% elif task['status'] == 'Not started' %}
+        <th scope="row" style="text-align: center; color: red;">{{ task['id']}}</th>
+        <td scope="row" style="text-align: center; color: red;">{{ task['title']}}</td>
+        <td scope="row" style="text-align: center; color: red;">{{ task['status']}}</td>
+        {% endif %}
+        <td style="text-align: center;">
+          <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px;" href="/done/{{ task['id'] }}" role="button" method="POST">Done</a>
+          <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px;" href="/in_progress/{{ task['id'] }}" role="button" method="POST">In progress</a>
+          <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px;" href="/not_started/{{ task['id'] }}" role="button" method="POST">Not started</a>
+          <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px;" href="/delete/{{ task['id'] }}" role="button" method="POST">Delete</a>
+          <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px;" href="/update/{{ task['id'] }}" role="button" method="POST">Update</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   
 {% endblock %}
