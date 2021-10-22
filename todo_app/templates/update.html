@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Update your task{% endblock %}
+
+
+{% block content %}
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-5">To-Do App</h1>
+      <p class="lead" style = "text-align: right; font-style: italic">Life should not be reduced to a to do list</p>
+      <p class="lead" style = "text-align: right; font-style: italic"> ― Rasheed Ogunlaru</p>
+    </div>
+  </div>
+  <p class="rounded" style = "text-align: left">Task no: <b>{{ task['id'] }}</b></p>
+  <p class="rounded" style = "text-align: left">Current description: <b>{{ task['title'] }}</b></p>
+
+  <form action="/update/{{ id }}/submit" method="POST" style="padding: 7px;">
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">Task</label>
+        <input type="text" name="Update" class="form-control mb-2" size="125" id="Task" placeholder="Update your task">
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2" style="background-color:#383c44; border-color: gold; border-width: 3px;">Update</button>
+      </div>
+    </div>
+  </form>
+  
+{% endblock %}
