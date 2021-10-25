@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, redirect, url_for
 from todo_app.flask_config import Config
 from todo_app.data import session_items
 
@@ -13,17 +13,16 @@ def index():
 
 @app.route("/add", methods=['POST'])
 def add():
-    if request.method == 'POST':
-        title = request.form['Add']
-        session_items.add_task(title)
-    return index()
+    title = request.form['Add']
+    session_items.add_task(title)
+    return redirect(url_for('index'))
 
 @app.route("/done/<id>")
 def done(id):
     task = session_items.get_task(id)
     task['status'] = 'Completed'
     session_items.update_task(task)
-    return index()
+    return redirect(url_for('index'))
 
 @app.route("/in_progress/<id>")
 def in_progress(id):
@@ -41,10 +40,7 @@ def not_started(id):
 
 @app.route("/delete/<id>")
 def delete(id):
-    id = id
-    task = session_items.get_task(id)
     session_items.delete_task(id)
-    session_items.update_task(task)
     return index()
 
 @app.route("/update/<id>")

@@ -2,6 +2,8 @@ from flask import session
 
 tasks = []
 
+
+
 def get_tasks():
     """
     Fetches all updated tasks from the session.
@@ -39,7 +41,9 @@ def add_task(title):
     tasks = get_tasks()
 
     # Determine the ID for the task based on that of the previously added task
-    id = tasks[-1]['id'] + 1 if tasks else 0
+    list_of_ids = [x['id'] for x in tasks]
+    list_of_ids.sort()
+    id = list_of_ids[-1] + 1 if tasks else 0
 
     task = { 'id': id, 'title': title, 'status': 'Not started' }
 
