@@ -68,7 +68,7 @@ def update_task(task):
 
     return task
 
-def delete_task(id):
+def delete_task(id): 
     existing_tasks = get_tasks()
     updated_tasks = []
     for task in existing_tasks:
