@@ -14,11 +14,12 @@
     <div class="form-row align-items-center">
       <div class="col-auto">
         <label class="sr-only" for="inlineFormInput">Task</label>
-        <input type="text" name="Add" class="form-control mb-2" size="130" id="Task" placeholder="Describe your task">
+        <input type="text" name="title" class="form-control mb-2" size="140" id="Task" placeholder="Title of your task">
+        <input type="text" name="desc" class="form-control mb-2" size="140" id="Task" placeholder="Describe you task">
+        <center><label for="start" style="display: block">Due by:</label></center>
+        <center><input type="date" style="margin: auto; ;" id="start" name="dueby" value="1995-09-06" min="2021-06-12" max="2100-12-31"></center>
       </div>
-      <div class="col-auto">
-        <button type="submit"  class="btn btn-primary mb-2" style="background-color:#383c44; border-color: gold; border-width: 3px;">Add</button>
-      </div>
+        <button type="submit"  class="btn btn-primary btn-lg btn-block" style="background-color:#383c44; border-color: gold; border-width: 3px; margin-top: 15px;">Add</button>
     </div>
   </form>
 
@@ -35,8 +36,10 @@
     <thead>
       <tr>
         <th scope="col" style="text-align: center;">Task ID</th>
+        <th scope="col" style="text-align: center;">Title</th>
         <th scope="col" style="text-align: center;">Description</th>
         <th scope="col" style="text-align: center;">Status</th>
+        <th scope="col" style="text-align: center;">Due By</th>
         <th scope="col" style="text-align: center;">Action</th>
       </tr>
     </thead>
@@ -46,15 +49,21 @@
         {% if task['status'] == 'Completed' %}
         <th scope="row" style="text-align: center; color:rgba(44, 75, 13, 0.651);"><s>{{ task['id']}}</s></th>
         <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['title']}}</s></td>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['desc']}}</s></td>
         <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['status']}}</s></td>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['due']}}</s></td>
         {% elif task['status'] == 'In progress' %}
         <th scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['id']}}</th>
         <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['title']}}</td>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['desc']}}</td>
         <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['status']}}</td>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['due']}}</td>
         {% elif task['status'] == 'Not started' %}
         <th scope="row" style="text-align: center; color: red;">{{ task['id']}}</th>
         <td scope="row" style="text-align: center; color: red;">{{ task['title']}}</td>
+        <td scope="row" style="text-align: center; color: red;">{{ task['desc']}}</td>
         <td scope="row" style="text-align: center; color: red;">{{ task['status']}}</td>
+        <td scope="row" style="text-align: center; color: red;">{{ task['due']}}</td>
         {% endif %}
         <td style="text-align: center;">
           <a class="btn btn-primary btn-sm" style="background-color:#383c44; border-color: gold; border-width: 3px;" href="/done/{{ task['id'] }}" role="button" method="POST">Done</a>

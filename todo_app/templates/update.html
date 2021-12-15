@@ -12,16 +12,20 @@
     </div>
   </div>
   <p class="rounded" style = "text-align: left">Task no: <b>{{ task['id'] }}</b></p>
-  <p class="rounded" style = "text-align: left">Current description: <b>{{ task['title'] }}</b></p>
-
+  <p class="rounded" style = "text-align: left">Current title: <b>{{ task['title'] }}</b></p>
+  <p class="rounded" style = "text-align: left">Current description: <b>{{ task['desc'] }}</b></p>
+  <p class="rounded" style = "text-align: left">Currently due by: <b>{{ task['due'] }}</b></p>
   <form action="/update/{{ id }}/submit" method="POST" style="padding: 7px;">
     <div class="form-row align-items-center">
       <div class="col-auto">
         <label class="sr-only" for="inlineFormInput">Task</label>
-        <input type="text" name="Update" class="form-control mb-2" size="125" id="Task" placeholder="Update your task">
+        <input type="text" name="title" class="form-control mb-2" size="125" id="Task" placeholder="Update the title">
+        <input type="text" name="desc" class="form-control mb-2" size="125" id="Task" placeholder="Update the description">
+        <center><label for="start" style="display: block">New due by:</label></center>
+        <center><input type="date" style="margin: auto; ;" id="start" name="due" value="1995-09-06" min="2021-06-12" max="2100-12-31"></center>
       </div>
       <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-2" style="background-color:#383c44; border-color: gold; border-width: 3px;">Update</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" style="background-color:#383c44; border-color: gold; border-width: 3px; margin-top: 15px;">Update</button>
       </div>
     </div>
   </form>
