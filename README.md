@@ -41,7 +41,7 @@ Follow the instructions here to generate your API key and token: https://trello.
 ## Add your API key and token to .env file
 Add your API key and token in .env file under 'TRELLO'. By convention, environment variable names are all uppercase with underscores e.g. 'API_KEY'
 
-You can also add board ID as well as "To do", "Doing", "Done" lists' ids in .env file. They are not sensitive values but it might be a good idea to keep them there as we want it to vary between environments.
+You can also add board ID as well as "Not started", "In progress", "Completed" lists' ids in .env file. They are not sensitive values but it might be a good idea to keep them there as we want it to vary between environments.
 
 ## Running the App
 

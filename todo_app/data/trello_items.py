@@ -1,12 +1,15 @@
 import requests, os
+from todo_app.flask_config import Config
 
 ### Fetch all variables specified in .env file
-key = os.environ.get("API_KEY")
-token = os.environ.get("API_TOKEN")
-board_id = os.environ.get("BOARD")
-notstarted_list = os.environ.get("NOTSTARTED_LIST")
-inprogress_list = os.environ.get("INPROGRESS_LIST")
-completed_list = os.environ.get("COMPLETED_LIST")
+config = Config()
+key = config.API_KEY
+token = config.API_TOKEN
+board_id = config.BOARD
+notstarted_list = config.NOTSTARTED_LIST
+inprogress_list = config.INPROGRESS_LIST
+completed_list = config.COMPLETED_LIST
+
 
 ### Create Task class
 class Task:
@@ -20,7 +23,6 @@ class Task:
     @classmethod
     def from_trello_card(cls, card, list_name):
         return cls(card["id"], card["name"], card["desc"], list_name, card["due"])
-
 
 ### Fetch all tasks in a list
 def get_tasks_in_a_list_trello(list_id):
@@ -49,7 +51,6 @@ def get_tasks_trello(lists):
     one_list = [task for sublist in all_tasks for task in sublist]
     return one_list
 
-
 ### Fetch a card/task
 def get_task_trello(task_id):
 
@@ -66,6 +67,7 @@ def get_task_trello(task_id):
     #Return task object based on info from the above
     task = Task.from_trello_card(response, list_name)
     return task
+
 
 
 ### Create a new card which displays as 'Not started'
@@ -111,13 +113,13 @@ def mark_as_not_started(task_id):
 ### Create simple sort functions which are used as key for built-in sort() function
 
 def sort_status_function(i):
-    return vars(i)['status']
+    return i.status
 
 def sort_title_function(i):
-    return vars(i)['title']
+    return i.title
 
 def sort_id_function(i):
-    return vars(i)['id']
+    return i.id
 
 
 ### Sort by status
