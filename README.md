@@ -61,3 +61,14 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Testing the App
+
+To run tests which are kept in todo_app/tests directory use the following:
+
+$ poetry run pytest or
+
+If you wish to run only selected tests:
+
+$ poetry run pytest todo_app/tests/<the file/test you wish to run>
+
