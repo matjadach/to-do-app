@@ -1,8 +1,13 @@
 - name: Install To Do App on new web server
   hosts: managed_nodes
   remote_user: ec2-user
+  environment:
+    
+  vars_files:
+    env_vars.yml
 
   tasks:
+
   - name: Install Git
     ansible.builtin.yum:
       name: git
@@ -32,3 +37,29 @@
       repo: 'https://github.com/matjadach/to-do-app.git'
       dest: /opt/todoapp
       version: exercise-4
+
+  - name: Go to App directory and install project dependencies using Poetry
+    ansible.builtin.command: ~/.local/bin/poetry install
+    args:
+      chdir: /opt/todoapp
+      creates: .venv
+
+  - name: Create .env file from a template
+    ansible.builtin.template:
+      src: .env.j2
+      dest: /opt/todoapp/.env
+
+  - name: Copy the 'todoapp.service' over to host
+    ansible.builtin.copy:
+      src: todoapp.service
+      dest: /etc/systemd/system/todoapp.service
+
+  - name: Start the App by reloading todoapp.service
+    ansible.builtin.systemd:
+      state: restarted
+      daemon_reload: yes
+      name: todoapp.service
+    become: yes
+
+  
+

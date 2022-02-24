@@ -119,5 +119,5 @@ env/
 ### Configuration files ###
 .env
 
-### PAT Token
-mytoken.txt
+### Ansible Vault Password
+ansible-password.txt
