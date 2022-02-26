@@ -54,10 +54,14 @@
       src: todoapp.service
       dest: /etc/systemd/system/todoapp.service
 
+  - name: Kill the running todoapp.service
+    ansible.builtin.command: systemctl kill todoapp.service
+    become: yes
+
   - name: Start the App by reloading todoapp.service
     ansible.builtin.systemd:
       name: todoapp.service
-      state: started
+      state: reloaded
     become: yes
   
 
