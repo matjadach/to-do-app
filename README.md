@@ -66,9 +66,23 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 
 To run tests which are kept in todo_app/tests directory use the following:
 
+```bash
 $ poetry run pytest or
+```
 
 If you wish to run only selected tests:
 
+```bash
 $ poetry run pytest todo_app/tests/<the file/test you wish to run>
+```
+
+## VM Provision
+
+Once on your Control Node, use this command to provision host VM: (You need to know the password to decrypt env_vars.yml)
+
+```bash
+$ ansible-playbook Playbook -i Inventory --ask-vault-pass
+```
+
+For this command to be successfull you need to make sure you can connect to your Host VM via SSH.
 
