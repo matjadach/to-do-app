@@ -33,5 +33,5 @@ services:
       target: test
     volumes:
       - type: bind
-        source: ./todo_app
-        target: /opt/todo_app
+        source: ./
+        target: /opt/
