@@ -118,6 +118,7 @@ env/
 
 ### Configuration files ###
 .env
+.env.dev
 
 ### Ansible Vault Password
 ansible-password.txt
