@@ -89,16 +89,13 @@ For this command to be successfull you need to make sure you can connect to your
 
 ## Running the App in a container (locally)
 
-1. Create a 
-
-
-To spin up both dev and prod containers use:
+To spin up all three containers(dev, test & prod) use the following command:
 
 ```bash
 $ docker-compose up
 ```
 
-If you wish to spin up only one of the containers (either dev or prod):
+If you wish to spin up only one of the containers (either dev, test or prod) use respecitively either:
 
 ```bash
 $ docker-compose up webapp-prod
@@ -106,4 +103,8 @@ $ docker-compose up webapp-prod
 
 ```bash
 $ docker-compose up webapp-dev
+```
+
+```bash
+$ docker-compose up webapp-test
 ```
