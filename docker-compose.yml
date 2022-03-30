@@ -22,9 +22,9 @@ services:
         source: ./todo_app
         target: /opt/todo_app
     env_file:
-      - .env.dev
+      - .env
     ports:
-      - 5000:5000
+      - 8000:8000
   webapp-test:
     container_name: test
     build:
