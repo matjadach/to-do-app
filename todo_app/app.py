@@ -65,5 +65,3 @@ def create_app():
         return render_template('index_with_all_completed.html', view_model = task_view_model)
 
     return app
-
-    
