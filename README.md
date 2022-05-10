@@ -43,7 +43,7 @@ Add your API key and token in .env file under 'TRELLO'. By convention, environme
 
 You can also add board ID as well as "Not started", "In progress", "Completed" lists' ids in .env file. They are not sensitive values but it might be a good idea to keep them there as we want it to vary between environments.
 
-## Running the App
+## Running the App locally
 
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
 ```bash
@@ -76,8 +76,9 @@ If you wish to run only selected tests:
 $ poetry run pytest todo_app/tests/<the file/test you wish to run>
 ```
 
-## VM Provision
+## Running the App on a VM
 
+# VM Provision:
 Once on your Control Node, use this command to provision host VM: (You need to know the password to decrypt env_vars.yml)
 
 ```bash
@@ -86,3 +87,24 @@ $ ansible-playbook Playbook -i Inventory --ask-vault-pass
 
 For this command to be successfull you need to make sure you can connect to your Host VM via SSH.
 
+## Running the App in a container (locally)
+
+To spin up all three containers(dev, test & prod) use the following command:
+
+```bash
+$ docker-compose up
+```
+
+If you wish to spin up only one of the containers (either dev, test or prod) use respecitively either:
+
+```bash
+$ docker-compose up webapp-prod
+```
+
+```bash
+$ docker-compose up webapp-dev
+```
+
+```bash
+$ docker-compose up webapp-test
+```
