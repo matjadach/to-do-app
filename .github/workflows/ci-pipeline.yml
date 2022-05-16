@@ -1,7 +1,6 @@
 name: Continuous Integration
 on: 
-    [push]
-    workflow_dispatch:
+    push:
     schedule:
         - cron: "0 22 * * 5" #At 10PM every Friday
 
