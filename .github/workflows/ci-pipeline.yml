@@ -16,7 +16,7 @@ jobs:
 
     - name: Read .env file from encoded .env.txt file
       env:
-        ENCODED_ENV_FILE: ${{secrets.ENV_FILE}
+        ENCODED_ENV_FILE: ${{secrets.ENV_FILE}}
       run: echo $ $ENCODED_ENV_FILE | base64 --decode > .env
 
     - name: Spin up test container and run the tests 
