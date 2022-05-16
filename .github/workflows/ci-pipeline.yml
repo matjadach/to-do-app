@@ -14,10 +14,25 @@ jobs:
     - name: Checkout repo content 
       uses: actions/checkout@v2
 
-    - name: Read .env file from encoded .env.txt file
+    - name: Create .env file
       env:
-        ENCODED_ENV_FILE: ${{secrets.ENV_FILE}}
-      run: echo $ENCODED_ENV_FILE | base64 --decode > .env
+        API_KEY: ${{ secrets.API_KEY }}
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+        BOARD: ${{ secrets.BOARD }}
+        NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
+        INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
+        COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
+      run: |
+        touch .env
+        echo FLASK_APP=todo_app/app >> .env
+        echo FLASK_ENV=production >> .env
+        echo SECRET_KEY=secret-key >> .env
+        echo API_KEY >> .env
+        echo API_TOKEN >> .env
+        echo BOARD >> .env
+        echo NOTSTARTED_LIST >> .env
+        echo INPROGRESS_LIST >> .env
+        echo COMPLETED_LIST >> .env
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
