@@ -4,11 +4,11 @@ on:
   push:
     paths-ignore:
       - "README.md"
-      - "documentation"
+      - "documentation/**"
   pull_request: 
     paths-ignore:
       - "README.md"
-      - "documentation"
+      - "documentation/**"
   schedule:
     - cron: "0 22 * * 5" #At 10PM every Friday
 
