@@ -23,7 +23,6 @@ jobs:
         INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
         COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
       run: |
-        printenv
         sh create_env_file.sh
 
     - name: Spin up test container and run the tests 
