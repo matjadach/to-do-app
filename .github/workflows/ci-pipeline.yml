@@ -2,6 +2,13 @@ name: Continuous Integration
 
 on: 
   push:
+    paths-ignore:
+      - README.md
+      - /documentation
+  pull_request:
+    paths-ignore:
+      - README.md
+      - /documentation
   schedule:
     - cron: "0 22 * * 5" #At 10PM every Friday
 
