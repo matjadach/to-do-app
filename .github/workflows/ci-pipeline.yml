@@ -33,7 +33,7 @@ jobs:
         sh create_env_file.sh
 
     - name: Spin up test container and run the tests 
-      run: docker-compose up webapp-test
+      run: docker-compose up webapp-tes
 
     # - name: Security Scan
     #   uses: snyk/actions/python@master
