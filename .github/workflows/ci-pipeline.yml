@@ -33,7 +33,7 @@ jobs:
         sh create_env_file.sh
 
     - name: Spin up test container and run the tests 
-      run: docker-compose up webapp-tes
+      run: docker-compose up webapp-test
 
     # - name: Security Scan
     #   uses: snyk/actions/python@master
@@ -51,6 +51,3 @@ jobs:
         mention_users: 'U03GZQ5GCQ0'
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-        # SLACK_USERNAME: SlackNotificationBot
-        # SLACK_ICON: https://img.icons8.com/doodle/48/000000/iron-man.png
-        # SLACK_COLOR: ${{ job.status }}
