@@ -36,10 +36,9 @@ jobs:
       run: docker-compose up webapp-test
 
     - name: Security Scan
-      uses: snyk/actions/python@master
+      uses: snyk/actions/python-3.8@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
 
     - name: Send Notification on Slack
       uses: rtCamp/action-slack-notify@v2
