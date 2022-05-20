@@ -3,11 +3,11 @@ name: Continuous Integration
 on: 
   push:
     paths-ignore:
-      - "README.md"
+      - "**.md"
       - "documentation/**"
   pull_request: 
     paths-ignore:
-      - "README.md"
+      - "**.md"
       - "documentation/**"
   schedule:
     - cron: "0 22 * * 5" #At 10PM every Friday
@@ -34,3 +34,10 @@ jobs:
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
+
+    - name: Send Notification on Slack
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: SlackNotificationBot
+        SLACK_ICON: https://img.icons8.com/doodle/48/000000/iron-man.png
