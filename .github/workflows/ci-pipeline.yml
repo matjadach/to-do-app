@@ -41,3 +41,5 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: SlackNotificationBot
         SLACK_ICON: https://img.icons8.com/doodle/48/000000/iron-man.png
+        SLACK_COLOR: ${{ job.status }}
+        MSG_MINIMAL: true
