@@ -35,6 +35,12 @@ jobs:
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
 
+    - name: Security Scan
+      uses: snyk/actions/python@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
     - name: Send Notification on Slack
       uses: rtCamp/action-slack-notify@v2
       env:
@@ -42,4 +48,3 @@ jobs:
         SLACK_USERNAME: SlackNotificationBot
         SLACK_ICON: https://img.icons8.com/doodle/48/000000/iron-man.png
         SLACK_COLOR: ${{ job.status }}
-        MSG_MINIMAL: true
