@@ -85,10 +85,9 @@ jobs:
     steps:
 
       - name: Log in to Heroku
-        run: heroku login -i
-
-      - name: Heroku authorization
-        run: heroku authorizations:create
+        run: heroku login
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Log in to Heroku Registry
         run: heroku container:login
