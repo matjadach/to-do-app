@@ -106,6 +106,7 @@ jobs:
 
       - name: Configure Heroku app
         run: |
+           cd /home/runner/work/to-do-app/to-do-app/
            heroku config:set `cat .env | grep FLASK_APP` -a app-do-to
            heroku config:set `cat .env | grep FLASK_ENV` -a app-do-to
            heroku config:set `cat .env | grep SECRET_KEY` -a app-do-to
