@@ -56,7 +56,7 @@ jobs:
     name: Login to DockerHub, build an image and publish it
     runs-on: ubuntu-latest
     needs: build
-    if: ${{github.event_name == 'push' && github.head_ref == 'exercise-8'}} #change this to 'main' before submitting
+    if: ${{github.event_name == 'push' && github.head_ref == 'refs/heads/exercise-8'}} #change this to 'main' before submitting
     steps:
 
       - name: Login to DockerHub
