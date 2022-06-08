@@ -84,20 +84,26 @@ jobs:
     if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-8'}} #change this to 'main' before submitting
     steps:
 
+      - name: Log in to Heroku
+        run: heroku login -i
+
       - name: Heroku authorization
         run: heroku authorizations:create
+
+      - name: Log in to Heroku Registry
+        run: heroku container:login
 
       - name: Create 'To-Do-App' on Heroku
         run: heroku create app-do-to
 
       - name: Configure Heroku app
         run: |
-           heroku config:set `cat .env | grep FLASK_APP`
-           heroku config:set `cat .env | grep FLASK_ENV`
-           heroku config:set `cat .env | grep SECRET_KEY`
-           heroku config:set `cat .env | grep API_KEY`
-           heroku config:set `cat .env | grep API_TOKEN`
-           heroku config:set `cat .env | grep BOARD`
-           heroku config:set `cat .env | grep NOTSTARTED_LIST`
-           heroku config:set `cat .env | grep INPROGRESS_LIST`
-           heroku config:set `cat .env | grep COMPLETED_LIST`
+           heroku config:set `cat .env | grep FLASK_APP` -a app-do-to
+           heroku config:set `cat .env | grep FLASK_ENV` -a app-do-to
+           heroku config:set `cat .env | grep SECRET_KEY` -a app-do-to
+           heroku config:set `cat .env | grep API_KEY` -a app-do-to
+           heroku config:set `cat .env | grep API_TOKEN` -a app-do-to
+           heroku config:set `cat .env | grep BOARD` -a app-do-to
+           heroku config:set `cat .env | grep NOTSTARTED_LIST` -a app-do-to
+           heroku config:set `cat .env | grep INPROGRESS_LIST` -a app-do-to
+           heroku config:set `cat .env | grep COMPLETED_LIST` -a app-do-to
