@@ -64,11 +64,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Cache Docker layers
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
       
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:latest,${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:${{ github.sha}}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache,mode=max
+          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache        | WOULD BE HANDY IF IT ACTUALLY WORKED :(
+          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache,mode=max |
