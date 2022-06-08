@@ -83,7 +83,7 @@ jobs:
     needs: build
     if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-8'}} #change this to 'main' before submitting
     steps:
-
+#add somewhere in readme that app on Heroku needs to be create manually
       - name: Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
@@ -100,9 +100,6 @@ jobs:
 
       - name: Log in to Heroku Registry
         run: heroku container:login
-
-      - name: Create 'To-Do-App' on Heroku
-        run: heroku create app-do-to
 
       - name: Configure Heroku app
         run: |
