@@ -64,9 +64,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      
+      - name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: matjadach/to-do-app:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:latest,${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:${{ github.sha}}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache,mode=max
