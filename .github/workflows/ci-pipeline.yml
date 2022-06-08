@@ -84,10 +84,19 @@ jobs:
     if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-8'}} #change this to 'main' before submitting
     steps:
 
-      - name: Log in to Heroku
-        run: heroku login
+      - name: Heroku login credentials
+        run: |
+          cat > ~/.netrc <<EOF
+            machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            machine git.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+          EOF
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
 
       - name: Log in to Heroku Registry
         run: heroku container:login
