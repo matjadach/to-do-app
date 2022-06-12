@@ -121,14 +121,14 @@ jobs:
       - name: Configure Heroku app
         run: |
            cd /home/runner/work/to-do-app/to-do-app/
-           heroku config:set FLASK_APP="`cat .env | grep FLASK_APP` -a app-do-to"
-           heroku config:set FLASK_ENV="`cat .env | grep FLASK_ENV` -a app-do-to"
-           heroku config:set SECRET_KEY="`cat .env | grep SECRET_KEY` -a app-do-to"
-           heroku config:set API_KEY="`cat .env | grep API_KEY` -a app-do-to"
-           heroku config:set API_TOKEN="`cat .env | grep API_TOKEN` -a app-do-to"
-           heroku config:set BOARD="`cat .env | grep BOARD` -a app-do-to"
-           heroku config:set NOTSTARTED_LIST="`cat .env | grep NOTSTARTED_LIST` -a app-do-to"
-           heroku config:set INPROGRESS_LIST="`cat .env | grep INPROGRESS_LIST` -a app-do-to"
-           heroku config:set COMPLETED_LIST="`cat .env | grep COMPLETED_LIST` -a app-do-to"
+           heroku config:set FLASK_APP=`cat .env | grep FLASK_APP` -a app-do-to
+           heroku config:set FLASK_ENV=`cat .env | grep FLASK_ENV` -a app-do-to
+           heroku config:set SECRET_KEY=`cat .env | grep SECRET_KEY` -a app-do-to
+           heroku config:set API_KEY=`cat .env | grep API_KEY` -a app-do-to
+           heroku config:set API_TOKEN=`cat .env | grep API_TOKEN` -a app-do-to
+           heroku config:set BOARD=`cat .env | grep BOARD` -a app-do-to
+           heroku config:set NOTSTARTED_LIST=`cat .env | grep NOTSTARTED_LIST` -a app-do-to
+           heroku config:set INPROGRESS_LIST=`cat .env | grep INPROGRESS_LIST` -a app-do-to
+           heroku config:set COMPLETED_LIST=`cat .env | grep COMPLETED_LIST` -a app-do-to
 
 #trigger
