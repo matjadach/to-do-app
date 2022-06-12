@@ -21,33 +21,19 @@ jobs:
     - name: Checkout repo content 
       uses: actions/checkout@v2
 
-    - name: Create .env file
-      run: |
-        sh create_env_file.sh
-        cat .env
+    # - name: Create .env file
+    #   run: |
+    #     sh create_env_file.sh
+    #     cat .env
 
-        
-    - name: Create .env file2
-      run: |
-        cd /home/runner/work/to-do-app/to-do-app/
-        touch .env
-        echo "FLASK_APP=todo_app/app" >> .env
-        echo "FLASK_ENV=production" >> .env
-        echo "SECRET_KEY=secret-key" >> .env
-        echo "$API_KEY" >> .env
-        echo "$API_TOKEN" >> .env
-        echo "$BOARD" >> .env
-        echo "$NOTSTARTED_LIST" >> .env
-        echo "$INPROGRESS_LIST" >> .env
-        echo "$COMPLETED_LIST" >> .env
-        cat .env
-      env:
-        API_KEY: ${{ secrets.API_KEY }}
-        API_TOKEN: ${{ secrets.API_TOKEN }}
-        BOARD: ${{ secrets.BOARD }}
-        NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
-        INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
-        COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
+    - name: create .env file
+      uses: ozaytsev86/create-env-file@v1
+      with:
+        ENV_API_KEY: "This"
+
+    - name: troubleshoot
+      run: cat .env
+
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
