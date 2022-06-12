@@ -30,6 +30,7 @@ jobs:
       run: |
         cat .env
         cat .env | grep API_KEY
+        wc -c .env
 
 
 
