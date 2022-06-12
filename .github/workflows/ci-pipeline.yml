@@ -117,12 +117,12 @@ jobs:
           COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
         run: |
           sh create_env_file.sh
-          sh pwd
-          sh cat .env
+          pwd
+          cat .env
 
       - name: Configure Heroku app
         run: |
-          sh pwd
+          pwd
           sh heroku_config.sh
 
 #trigger
