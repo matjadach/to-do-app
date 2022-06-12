@@ -105,11 +105,11 @@ jobs:
         run: heroku container:login
 
       - name: Create an app on Heroku
+        continue-on-error: true #Adding it here as the step will fail if the app with the same name is still there
         run: heroku apps:create app-do-to --region eu
 
       - name: Checkout repo content 
         uses: actions/checkout@v2
-        if: always() #Adding if:always() here as the previous stop will fail if the app under the same name is still there
 
       - name: Create .env file
         run: |
