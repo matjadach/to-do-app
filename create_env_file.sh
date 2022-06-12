@@ -1,5 +1,5 @@
 #!/bin/bash
-# cd /home/runner/work/to-do-app/to-do-app/
+cd /home/runner/work/to-do-app/to-do-app/
 touch .envtest
 echo "FLASK_APP=todo_app/app" >> .envtest
 echo "FLASK_envtest=production" >> .envtest
