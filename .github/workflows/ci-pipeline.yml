@@ -12,6 +12,17 @@ on:
   schedule:
     - cron: "0 22 * * 5" #At 10PM every Friday
 
+env:
+  FLASK_APP: "todo_app/app"
+  FLASK_ENV: "production"
+  SECRET_KEY: "secret-key"
+  API_KEY: ${{ secrets.API_KEY }}
+  API_TOKEN: ${{ secrets.API_TOKEN }}
+  BOARD: ${{ secrets.BOARD }}
+  NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
+  INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
+  COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
+
 jobs:
   build:
     name: Provision the test container and run the tests
@@ -22,17 +33,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Create .env file
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_API_KEY: ${{ secrets.API_KEY }}
-        envkey_API_TOKEN: ${{ secrets.API_TOKEN }}
-        envkey_BOARD: ${{ secrets.BOARD }}
-        envkey_NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
-        envkey_INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
-        envkey_COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
+      run: |
+        sh create_env_file.sh
+        cat .env
 
     - name: troubleshoot
-      run: cat .env
+      run: |
+        printenv
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
