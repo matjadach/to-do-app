@@ -140,5 +140,6 @@ jobs:
 
       - name: Tag the current image and push it to Heroku registry
         run: |
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/to-do-app registry.heroku.com/app-do-to/web
-          docker push registry.heroku.com/app-do-to/web
+          docker image list
+        # docker tag ${{ secrets.DOCKERHUB_USERNAME }}/to-do-app registry.heroku.com/app-do-to/web
+        # docker push registry.heroku.com/app-do-to/web
