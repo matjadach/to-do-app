@@ -104,6 +104,9 @@ jobs:
       - name: Log in to Heroku Registry
         run: heroku container:login
 
+      - name: Create an app on Heroku
+        run: heroku apps:create app-do-to
+
       - name: Checkout repo content 
         uses: actions/checkout@v2
 
