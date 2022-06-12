@@ -105,7 +105,7 @@ jobs:
         run: heroku container:login
 
       - name: Create an app on Heroku
-        run: heroku apps:create app-do-to
+        run: heroku apps:create app-do-to --region eu
 
       - name: Checkout repo content 
         uses: actions/checkout@v2
