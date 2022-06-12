@@ -31,6 +31,9 @@ jobs:
         envkey_INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
         envkey_COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
 
+    - name: troubleshoot
+      run: cat .env
+
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
 
