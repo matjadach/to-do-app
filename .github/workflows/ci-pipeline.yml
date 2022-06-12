@@ -32,7 +32,10 @@ jobs:
         ENV_API_KEY: "${{ secrets.API_KEY }}"
 
     - name: troubleshoot
-      run: cat .env
+      run: |
+        cat .env
+        cat .env | grep API_KEY
+
 
 
     - name: Spin up test container and run the tests 
