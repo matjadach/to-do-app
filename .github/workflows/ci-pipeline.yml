@@ -31,6 +31,7 @@ jobs:
         COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
       run: |
         sh create_env_file.sh
+        cat .env
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
