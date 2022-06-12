@@ -12,17 +12,6 @@ on:
   schedule:
     - cron: "0 22 * * 5" #At 10PM every Friday
 
-env:
-  FLASK_APP: "todo_app/app"
-  FLASK_ENV: "production"
-  SECRET_KEY: "secret-key"
-  API_KEY: ${{ secrets.API_KEY }}
-  API_TOKEN: ${{ secrets.API_TOKEN }}
-  BOARD: ${{ secrets.BOARD }}
-  NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
-  INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
-  COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
-
 jobs:
   build:
     name: Provision the test container and run the tests
@@ -37,9 +26,28 @@ jobs:
         sh create_env_file.sh
         cat .env
 
-    - name: troubleshoot
+        
+    - name: Create .env file2
       run: |
-        printenv
+        cd /home/runner/work/to-do-app/to-do-app/
+        touch .env
+        echo "FLASK_APP=todo_app/app" >> .env
+        echo "FLASK_ENV=production" >> .env
+        echo "SECRET_KEY=secret-key" >> .env
+        echo $API_KEY >> .env
+        echo $API_TOKEN >> .env
+        echo $BOARD >> .env
+        echo $NOTSTARTED_LIST >> .env
+        echo $INPROGRESS_LIST >> .env
+        echo $COMPLETED_LIST >> .env
+        cat .env
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+        BOARD: ${{ secrets.BOARD }}
+        NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
+        INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
+        COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
