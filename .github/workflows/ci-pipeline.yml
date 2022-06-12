@@ -30,9 +30,6 @@ jobs:
         envkey_NOTSTARTED_LIST: ${{ secrets.NOTSTARTED_LIST }}
         envkey_INPROGRESS_LIST: ${{ secrets.INPROGRESS_LIST }}
         envkey_COMPLETED_LIST: ${{ secrets.COMPLETED_LIST }}
-      run: |
-        sh create_env_file.sh
-        cat .env
 
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
