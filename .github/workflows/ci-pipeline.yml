@@ -83,7 +83,7 @@ jobs:
     needs: build
     if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-8'}} #change this to 'main' before submitting
     steps:
-#add somewhere in readme that app on Heroku needs to be create manually
+#add somewhere in readme that app on Heroku needs to be created manually
       - name: Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
@@ -130,3 +130,5 @@ jobs:
            heroku config:set `cat .env | grep NOTSTARTED_LIST` -a app-do-to
            heroku config:set `cat .env | grep INPROGRESS_LIST` -a app-do-to
            heroku config:set `cat .env | grep COMPLETED_LIST` -a app-do-to
+
+#trigger
