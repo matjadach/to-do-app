@@ -136,8 +136,9 @@ jobs:
           heroku config:set INPROGRESS_LIST=${{ secrets.INPROGRESS_LIST}} -a app-do-to
           heroku config:set COMPLETED_LIST=${{ secrets.COMPLETED_LIST}} -a app-do-to
 
-      - name: Tag the current image and push it to Heroku registry
+      - name: Tag the current image and push it to Heroku registry and deploy
         run: |
           docker build --target production -t registry.heroku.com/app-do-to/web .
           docker image list
           docker push registry.heroku.com/app-do-to/web
+          heroku container:release web
