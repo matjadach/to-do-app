@@ -106,8 +106,8 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
 
-      - name: Log in to Heroku Registry
-        run: heroku container:login
+      # - name: Log in to Heroku Registry
+      #   run: heroku container:login
 
       - name: Create an app on Heroku
         continue-on-error: true #Adding it here as the step will fail if the app with the same name is still there
