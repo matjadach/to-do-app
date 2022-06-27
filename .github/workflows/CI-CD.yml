@@ -1,0 +1,143 @@
+name: Continuous Integration & Deployment
+
+on: 
+  push:
+    paths-ignore:
+      - "**.md"
+      - "documentation/**"
+  pull_request: 
+    paths-ignore:
+      - "**.md"
+      - "documentation/**"
+  schedule:
+    - cron: "0 22 * * 5" #At 10PM every Friday
+
+jobs:
+  build:
+    name: Provision the test container and run the tests
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout repo content 
+      uses: actions/checkout@v2
+
+    - name: Create .env file
+      run: |
+        cd /home/runner/work/to-do-app/to-do-app/
+        touch .env
+        echo "FLASK_APP=todo_app/app" >> .env
+        echo "FLASK_.env=production" >> .env
+        echo "SECRET_KEY=secret-key" >> .env
+        echo "API_KEY=${{ secrets.API_KEY}}" >> .env
+        echo "API_TOKEN=${{ secrets.API_TOKEN}}" >> .env
+        echo "BOARD=${{ secrets.BOARD}}" >> .env
+        echo "NOTSTARTED_LIST=${{ secrets.NOTSTARTED_LIST}}" >> .env
+        echo "INPROGRESS_LIST=${{ secrets.INPROGRESS_LIST}}" >> .env
+        echo "COMPLETED_LIST=${{ secrets.COMPLETED_LIST}}" >> .env
+    - name: Spin up test container and run the tests 
+      run: docker-compose up webapp-test
+
+    # - name: Security Scan
+    #   uses: snyk/actions/python@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} Tried this but fails with a message: "Failed to test pip project" - I could not find version of Snyk for Python 3.9 which I use?
+
+    - name: Send Notification on Slack
+      if: always()
+      uses: ravsamhq/notify-slack-action@v1
+      with:
+        status: ${{ job.status }}
+        notification_title: '{workflow} has {status_message}'
+        message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+        footer: 'Linked Repo <{repo_url}|{repo}>'
+        mention_users: 'U03GZQ5GCQ0'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  publish:
+    name: Login to DockerHub, build an image and publish it
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/main'}}
+    steps:
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Cache Docker layers
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+      
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:latest,${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:${{ github.sha}}
+          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache        | WOULD BE HANDY IF IT ACTUALLY WORKED :(
+          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache,mode=max |
+
+  deploy:
+    name: Deploy the app on Heroku
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/main'}}
+    steps:
+      - name: Heroku login credentials
+        run: |
+          cat > ~/.netrc <<EOF
+            machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            machine git.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+          EOF
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+
+      - name: Log in to Heroku Registry
+        run: heroku container:login
+
+      - name: Create an app on Heroku
+        continue-on-error: true #Adding it here as the step will fail if the app with the same name is still there
+        run: heroku apps:create app-do-to --region eu
+
+      - name: Checkout repo content 
+        uses: actions/checkout@v2
+
+      - name: Create .env file
+        run: |
+          cd /home/runner/work/to-do-app/to-do-app/
+          touch .env
+          echo "FLASK_APP=todo_app/app" >> .env
+          echo "FLASK_.env=production" >> .env
+          echo "SECRET_KEY=secret-key" >> .env
+          echo "API_KEY=${{ secrets.API_KEY}}" >> .env
+          echo "API_TOKEN=${{ secrets.API_TOKEN}}" >> .env
+          echo "BOARD=${{ secrets.BOARD}}" >> .env
+          echo "NOTSTARTED_LIST=${{ secrets.NOTSTARTED_LIST}}" >> .env
+          echo "INPROGRESS_LIST=${{ secrets.INPROGRESS_LIST}}" >> .env
+          echo "COMPLETED_LIST=${{ secrets.COMPLETED_LIST}}" >> .env
+
+      - name: Configure Heroku app
+        run: |
+          cd /home/runner/work/to-do-app/to-do-app/
+          heroku config:set FLASK_APP=todo_app/app -a app-do-to
+          heroku config:set FLASK_ENV=production -a app-do-to
+          heroku config:set SECRET_KEY=secret-key -a app-do-to
+          heroku config:set API_KEY=${{ secrets.API_KEY}} -a app-do-to
+          heroku config:set API_TOKEN=${{ secrets.API_TOKEN}} -a app-do-to
+          heroku config:set BOARD=${{ secrets.BOARD}} -a app-do-to
+          heroku config:set NOTSTARTED_LIST=${{ secrets.NOTSTARTED_LIST}} -a app-do-to
+          heroku config:set INPROGRESS_LIST=${{ secrets.INPROGRESS_LIST}} -a app-do-to
+          heroku config:set COMPLETED_LIST=${{ secrets.COMPLETED_LIST}} -a app-do-to
+
+      - name: Tag the current image and push it to Heroku registry and deploy
+        run: |
+          docker build --target production -t registry.heroku.com/app-do-to/web .
+          docker push registry.heroku.com/app-do-to/web
+          heroku container:release web --app app-do-to
