@@ -95,7 +95,7 @@ To spin up all three containers(dev, test & prod) use the following command:
 $ docker-compose up
 ```
 
-If you wish to spin up only one of the containers (either dev, test or prod) use respecitively either:
+If you wish to spin up only one of the containers (either dev, test or prod) use respecitively either (Note: if you wish to run the prod container locally please change "$PORT" in gunicorn.sh to "80"):
 
 ```bash
 $ docker-compose up webapp-prod
