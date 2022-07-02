@@ -1,6 +1,16 @@
 version: "3"
 
 services:
+  webapp-prod:
+    container_name: production
+    build:
+      dockerfile:  Dockerfile
+      context: .
+      target: production
+    env_file:
+      - .env
+    ports:
+      - 80:80
   webapp-dev:
     container_name: development
     build:
@@ -25,13 +35,3 @@ services:
       - type: bind
         source: ./
         target: /opt/
-  webapp-prod:
-    container_name: production
-    build:
-      dockerfile:  Dockerfile
-      context: .
-      target: production
-    env_file:
-      - .env
-    ports:
-      - 80:80
