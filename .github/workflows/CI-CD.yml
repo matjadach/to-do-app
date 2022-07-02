@@ -67,8 +67,6 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:latest,${{ secrets.DOCKERHUB_USERNAME }}/to-do-app:${{ github.sha}}
-          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache        | WOULD BE HANDY IF IT ACTUALLY WORKED :(
-          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/to-do-app:buildcache,mode=max |
 
   deploy:
     name: Deploy the latest version of the image on Azure
