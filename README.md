@@ -137,9 +137,10 @@ $ az webapp create -g {Your resource group name} --plan {Your app service plan n
 First, create a file called "env.json" in which set all the environment variables following the format below:
 
 ```bash
-$ {
-    "CONFIG_KEY_01": "CONFIG_VALUE_01"
-  }
+{
+  "CONFIG_KEY_01": "CONFIG_VALUE_01"
+  "CONFIG_KEY_02": "CONFIG_VALUE_02"
+}
 ```
 
 Then run the following command:
