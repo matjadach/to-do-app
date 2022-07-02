@@ -108,3 +108,38 @@ $ docker-compose up webapp-dev
 ```bash
 $ docker-compose up webapp-test
 ```
+## Deploying the App on Heroku
+
+## Deploying the App on Azure
+
+To deploy the app on Azure follow the below steps:
+
+1. Log in to Azure (You need to set up an account first - go to https://signup.azure.com/ to sign up )
+
+```bash
+$ az login
+```
+
+2. Create an App Service Plan 
+
+```bash
+$ az appservic plan create -g {Your resource group name eg. test-resource-group-01} -n {Name of your app. Needs to be unique globally e.g. test-app-01} --sku {e.g. B1} --is-Linux
+```
+
+3. Configure your app
+
+First, create a file called "env.json" in which set all the environment variables like this:
+
+```bash
+$ {
+    "CONFIG_KEY_01": "CONFIG_VALUE_01"
+  }
+```
+
+Then run the following command:
+
+```bash
+$ az webapp config appsettings set -g {Your resource group name eg. test-resource-group-01} -n {Name of your app} --settings @env.json
+```
+
+1. Create a Web App and deploy the production image container.
