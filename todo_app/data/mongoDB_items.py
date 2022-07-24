@@ -16,7 +16,7 @@ client = pymongo.MongoClient(connection_string)
 
 db_name = os.environ.get("TASKS_DB_NAME")
 collection_name = os.environ.get("COLLECTION_NAME")
-tasks = client[db_name][collection_name]
+tasks = client[f"{db_name}"][f"{collection_name}"]
 
 class Task:
     def __init__(self, id, title, desc, status, due, last_modified=(datetime.now()).isoformat()):
