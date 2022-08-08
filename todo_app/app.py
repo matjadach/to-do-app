@@ -2,10 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for
 from todo_app.data.mongoDB_items import MongoDBTasks
 from todo_app.viewmodel import ViewModel
 
-mongodb_tasks = MongoDBTasks()
 
 def create_app():
     app = Flask(__name__)
+    mongodb_tasks = MongoDBTasks()
 
     @app.route('/')
     def index():

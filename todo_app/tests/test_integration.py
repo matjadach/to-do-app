@@ -1,3 +1,4 @@
+from bson import decode
 import mongomock
 import pymongo
 import pytest
@@ -31,3 +32,4 @@ def test_index_page(client):
 
     response = client.get('/')
     assert response.status_code == 200 #Not entirely sure this test works as it should. Also it would be great to test other functionality... to do I guess
+    assert "fake title" in response.data.decode()
