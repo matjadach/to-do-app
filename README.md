@@ -186,3 +186,7 @@ Remember to rerun the azure cli command from Step 4.
 3. Task transfer from Trello to MongoDB
 
 To transfer tasks from Trello to MongoDB instance, run `python3 migrate.py` in the root folder of this repo. By default it will delete the tasks from Trello during the migration. If you wish to change this behaviour set 'delete_after_transfer' value in 'migrate.py' file to False.
+
+4. Confirm your app is and running. Check if all your tasks from Trello have been migrated.
+
+Go to "http://{Your web app name}.azurewebsites.net/"
