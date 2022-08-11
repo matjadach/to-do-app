@@ -138,7 +138,7 @@ First, create a file called "env.json" in which set all the environment variable
 
 ```bash
 {
-  "CONFIG_KEY_01": "CONFIG_VALUE_01"
+  "CONFIG_KEY_01": "CONFIG_VALUE_01",
   "CONFIG_KEY_02": "CONFIG_VALUE_02"
 }
 ```
@@ -152,3 +152,37 @@ $ az webapp config appsettings set -g {Your resource group name eg. test-resourc
 5. Confirm your app is up and running
 
 Go to http://{Your web app name}.azurewebsites.net/
+
+## Using MongoDB for tasks storage.
+
+1. Log into Azure and create MongoDB cluster either via the Portal UI or with the CLI.
+
+### With the Portal:
+• New → CosmosDB Database
+• Select "Azure Cosmos DB API for MongoDB"
+• Choose "Serverless" for Capacity mode
+• Create new collection within your databse.
+• You can also configure secure firewall connections here, but for now you should permit access from "All Networks" to enable easier testing of the integration with the app.
+### With the CLI:
+• Create new CosmosDB Account by typing in your terminal:
+`az cosmosdb create --name <cosmos_account_name> --resource-group <resource_group_name> --kind MongoDB --capabilities EnableServerless -- server-version 3.6`
+• Create new MongoDB database under that account:
+`az cosmosdb mongodb database create --account-name <cosmos_account_name> --name <database_name> --resource-group <resource_group_name>`
+• Create new collection under that database account:
+`az cosmosdb mongodb collection create --account-name <cosmos_account_name> --databasename <database_name>  --name <collection_name>  --resource-group <resource_group_name>`
+
+Obtain "Primary Connection String" to connect to your MongoDB instance. You can find it under "Settings" in the Azure Portal UI.
+
+1. Repeat Step 4 from 'Deploying the App on Azure' paragraph, but first populate your .envjson with the following:
+```bash
+{
+  "DB_CONNECTION_STRING": "<Primary Connection String>",
+  "TASKS_DB_NAME": "<database_name>",
+  "COLLECTION_NAME": "<collection_name>"
+}
+```
+Remember to rerun the azure cli command from Step 4.
+
+3. Task transfer from Trello to MongoDB
+
+To transfer tasks from Trello to MongoDB instance, run `python3 migrate.py` in the root folder of this repo. By default it will delete the tasks from Trello during the migration. If you wish to change this behaviour set 'delete_after_transfer' value in 'migrate.py' file to False.
