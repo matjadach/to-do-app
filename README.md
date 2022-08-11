@@ -129,7 +129,7 @@ $ az appservice plan create -g {Your resource group name eg. test-resource-group
 3. Create a Web App and deploy the production image container
 
 ```bash
-$ az webapp create -g {Your resource group name} --plan {Your app service plan name} --name {Name of your app. Needs to be unique globally e.g. test-app-01} --deployment-container-image-name {docker hub username/name of the iamge and a tag e.g. username/your_apps_image:latest}
+$ az webapp create -g {Your resource group name} --plan {Your app service plan name} --name {Name of your app. Needs to be unique globally e.g. test-app-01} --deployment-container-image-name {docker hub username/name of the image and a tag e.g. username/your_apps_image:latest}
 ```
 
 4. Configure your app
