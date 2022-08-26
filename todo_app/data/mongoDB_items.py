@@ -2,12 +2,6 @@ import pymongo
 from datetime import datetime
 from bson.objectid import ObjectId
 import os
-from dotenv import find_dotenv, load_dotenv
-
-
-# file_path = find_dotenv(".env")
-# load_dotenv(file_path, override=True)
-
 
 
 class Task:
@@ -19,6 +13,10 @@ class Task:
         self.due = due
         self.last_modified = last_modified
 
+    @classmethod
+    def from_mongo_document(cls, document):
+        return cls(document["_id"], document["title"], document["desc"], document["status"], document["due"], document["last_modified"])
+
 class MongoDBTasks:
     def __init__(self):
         # Store connection string as a secret
@@ -29,12 +27,12 @@ class MongoDBTasks:
 
         db_name = os.environ.get("TASKS_DB_NAME")
         collection_name = os.environ.get("COLLECTION_NAME")
-        self.tasks = client[f"{db_name}"][f"{collection_name}"]
+        self.tasks = client[db_name][collection_name]
 
     def get_all_tasks(self):
         tasks_list = []
         for task in self.tasks.find():
-            tasks_list.append(Task(id=task["_id"], title=task["title"], desc=task["desc"], status=task["status"], due=task["due"], last_modified=task["last_modified"]))
+            tasks_list.append(Task.from_mongo_document(task))
         
         return tasks_list
 
