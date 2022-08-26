@@ -28,11 +28,6 @@ jobs:
     - name: Spin up test container and run the tests 
       run: docker-compose up webapp-test
 
-    # - name: Security Scan
-    #   uses: snyk/actions/python@master
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} Tried this but fails with a message: "Failed to test pip project" - I could not find version of Snyk for Python 3.9 which I use?
-
     - name: Send Notification on Slack
       if: always()
       uses: ravsamhq/notify-slack-action@v1

@@ -32,16 +32,43 @@ $ cp .env.template .env  # (first time only)
 
 The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie.
 
-## Create Trello Account
-Create your Trello account here: https://trello.com/signup
+## Set up MongoDB for tasks storage.
 
-## Obtain your API key and token
-Follow the instructions here to generate your API key and token: https://trello.com/app-key
+1. Log into Azure and create MongoDB cluster either via the Portal UI or with the CLI.
 
-## Add your API key and token to .env file
-Add your API key and token in .env file under 'TRELLO'. By convention, environment variable names are all uppercase with underscores e.g. 'API_KEY'
+### With the Portal:
+• New → CosmosDB Database
+• Select "Azure Cosmos DB API for MongoDB"
+• Choose "Serverless" for Capacity mode
+• Create new collection within your databse.
+• You can also configure secure firewall connections here, but for now you should permit access from "All Networks" to enable easier testing of the integration with the app.
+### With the CLI:
+• Create new CosmosDB Account by typing in your terminal:
+`az cosmosdb create --name <cosmos_account_name> --resource-group <resource_group_name> --kind MongoDB --capabilities EnableServerless -- server-version 3.6`
+• Create new MongoDB database under that account:
+`az cosmosdb mongodb database create --account-name <cosmos_account_name> --name <database_name> --resource-group <resource_group_name>`
+• Create new collection under that database account:
+`az cosmosdb mongodb collection create --account-name <cosmos_account_name> --databasename <database_name>  --name <collection_name>  --resource-group <resource_group_name>`
 
-You can also add board ID as well as "Not started", "In progress", "Completed" lists' ids in .env file. They are not sensitive values but it might be a good idea to keep them there as we want it to vary between environments.
+Obtain "Primary Connection String" to connect to your MongoDB instance. You can find it under "Settings" in the Azure Portal UI.
+
+1. Repeat Step 4 from 'Deploying the App on Azure' paragraph, but first populate your .envjson with the following:
+```bash
+{
+  "DB_CONNECTION_STRING": "<Primary Connection String>",
+  "TASKS_DB_NAME": "<database_name>",
+  "COLLECTION_NAME": "<collection_name>"
+}
+```
+Remember to rerun the azure cli command from Step 4.
+
+3. Task transfer from Trello to MongoDB
+
+To transfer tasks from Trello to MongoDB instance, run `python3 migrate.py` in the root folder of this repo. By default it will delete the tasks from Trello during the migration. If you wish to change this behaviour set 'delete_after_transfer' value in 'migrate.py' file to False.
+
+4. Confirm your app is and running. Check if all your tasks from Trello have been migrated.
+
+Go to "http://{Your web app name}.azurewebsites.net/"
 
 ## Running the App locally
 
@@ -129,7 +156,7 @@ $ az appservice plan create -g {Your resource group name eg. test-resource-group
 3. Create a Web App and deploy the production image container
 
 ```bash
-$ az webapp create -g {Your resource group name} --plan {Your app service plan name} --name {Name of your app. Needs to be unique globally e.g. test-app-01} --deployment-container-image-name {docker hub username/name of the iamge and a tag e.g. username/your_apps_image:latest}
+$ az webapp create -g {Your resource group name} --plan {Your app service plan name} --name {Name of your app. Needs to be unique globally e.g. test-app-01} --deployment-container-image-name {docker hub username/name of the image and a tag e.g. username/your_apps_image:latest}
 ```
 
 4. Configure your app
@@ -138,7 +165,7 @@ First, create a file called "env.json" in which set all the environment variable
 
 ```bash
 {
-  "CONFIG_KEY_01": "CONFIG_VALUE_01"
+  "CONFIG_KEY_01": "CONFIG_VALUE_01",
   "CONFIG_KEY_02": "CONFIG_VALUE_02"
 }
 ```
@@ -152,3 +179,4 @@ $ az webapp config appsettings set -g {Your resource group name eg. test-resourc
 5. Confirm your app is up and running
 
 Go to http://{Your web app name}.azurewebsites.net/
+

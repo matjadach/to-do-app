@@ -88,7 +88,7 @@
 
 <!-- 3rd Table to display Completed/Done  items -->
   <table class="table table-striped">
-    <caption style="caption-side: top; text-align: center; font-size: 40px; color: grey;"><b>COMPLETED:</b></caption>
+    <caption style="caption-side: top; text-align: center; font-size: 40px; color: grey;"><b>COMPLETED: (IN THE LAST 24h)</b></caption>
     <thead>
       <tr>
         <th scope="col" style="text-align: center;">Task ID</th>
@@ -100,7 +100,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for task in view_model.recent_done_tasks[:5] %}
+      {% for task in view_model.recent_done_tasks %}
       <tr>
         <th scope="row" style="text-align: center; color:rgba(44, 75, 13, 0.651);"><s>{{ task['id']}}</s></th>
         <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['title']}}</s></td>
@@ -119,7 +119,7 @@
     </tbody>
   </table>
 
-  <a type="submit"  class="btn btn-primary btn-lg btn-block" style="margin: auto; background-color:#383c44; border-color: gold; border-width: 3px; margin-top: 15px;" href="/index_with_all_completed">See older tasks you have completed</a>
+  <a type="submit"  class="btn btn-primary btn-lg btn-block" style="margin: auto; background-color:#383c44; border-color: gold; border-width: 3px; margin-top: 15px;" href="/index_with_all_completed">See all the tasks you have completed</a>
 
 
 
