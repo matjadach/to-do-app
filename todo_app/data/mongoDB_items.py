@@ -27,8 +27,6 @@ class MongoDBTasks:
 
         db_name = os.environ.get("TASKS_DB_NAME")
         collection_name = os.environ.get("TASKS_COLLECTION_NAME")
-        print(type(db_name))
-        print(type(collection_name))
         self.tasks = client[db_name][collection_name]
 
     def get_all_tasks(self):
