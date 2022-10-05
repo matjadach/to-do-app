@@ -49,11 +49,11 @@ def create_app():
         id = (requests.get(user_info_url, headers=user_info_headers)).json()['id']
         print(id)
 
-        user = User(user_id = id)
+        user = User(user_id=id)
         print(user)
         login_user(user)
 
-        return redirect(url_for('index'))
+        return Hello
 
 
     @app.route('/')
