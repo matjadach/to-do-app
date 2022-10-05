@@ -1,13 +1,25 @@
 from flask import Flask, render_template, request, redirect, url_for
 from todo_app.data.mongoDB_items import MongoDBTasks
 from todo_app.viewmodel import ViewModel
+from flask_login import LoginManager
 
 
 def create_app():
     app = Flask(__name__)
     mongodb_tasks = MongoDBTasks()
 
+    login_manager = LoginManager()
+    
+    @login_manager.unauthorized_handler
+    def unauthenticated():
+        pass # Add logic to redirect to the GitHub OAuth flow when unauthenticated
+    @login_manager.user_loader
+    def load_user(user_id):
+        pass # We will return to this later
+    login_manager.init_app(app)
+
     @app.route('/')
+    @login_required 
     def index():
         tasks = mongodb_tasks.get_all_tasks()
         task_view_model = ViewModel(tasks)

@@ -45,6 +45,18 @@ docs = ["sphinx-issues", "sphinxcontrib-log-cabinet", "pallets-sphinx-themes", "
 dev = ["sphinx-issues", "sphinxcontrib-log-cabinet", "pallets-sphinx-themes", "sphinx", "tox", "coverage", "pytest"]
 
 [[package]]
+name = "flask-login"
+version = "0.6.2"
+description = "User authentication and session management for Flask."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Flask = ">=1.0.4"
+Werkzeug = ">=1.0.1"
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -198,13 +210,14 @@ dev = ["sphinx-issues", "pallets-sphinx-themes", "sphinx", "tox", "coverage", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "738b56001c97185cb35a535db5028a168d743a93f2416be7d8b402058d409b52"
+content-hash = "3394dad18eb23f7814f37dd31784f0e795ae25ffc98a680546f0ec52ab8e8e72"
 
 [metadata.files]
 certifi = []
 charset-normalizer = []
 click = []
 flask = []
+flask-login = []
 idna = []
 itsdangerous = []
 jinja2 = []
