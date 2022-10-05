@@ -9,6 +9,7 @@ class Config:
         self.NOTSTARTED_LIST = os.environ.get("NOTSTARTED_LIST")
         self.INPROGRESS_LIST = os.environ.get("INPROGRESS_LIST")
         self.COMPLETED_LIST = os.environ.get("COMPLETED_LIST")
+        self.SECRET_KEY = os.environ.get("SECRET_KEY")
         if not self.API_KEY:
             raise ValueError("No API_KEY defined. Did you follow the README file?")
         if not self.API_TOKEN:
@@ -21,3 +22,5 @@ class Config:
             raise ValueError("No INPROGRESS_LIST ID defined. Did you follow the README file?")
         if not self.COMPLETED_LIST:
             raise ValueError("No COMPLETED_LIST ID defined. Did you follow the README file?")
+        if not self.SECRET_KEY:
+            raise ValueError("No SECRET_KEY ID defined. Did you follow the README file?")

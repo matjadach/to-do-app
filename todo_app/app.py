@@ -19,7 +19,7 @@ def create_app():
         return redirect(f"https://github.com/login/oauth/authorize?client_id={os.environ.get('CLIENT_ID')}")
     @login_manager.user_loader
     def load_user(user_id):
-        pass # We will return to this later
+        return User(user_id)
     login_manager.init_app(app)
 
     @app.route('/login/callback', methods=['GET'])
@@ -53,7 +53,7 @@ def create_app():
         print(user)
         login_user(user)
 
-        return Hello
+        return redirect(url_for('index'))
 
 
     @app.route('/')
