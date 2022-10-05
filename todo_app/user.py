@@ -1,4 +1,5 @@
 from flask_login import UserMixin
 
-class User():
-    
+class User(UserMixin):
+    def __init__(self, user_id):
+        self.user_id = user_id
