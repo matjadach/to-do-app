@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from todo_app.data.mongoDB_items import MongoDBTasks
 from todo_app.viewmodel import ViewModel
 from flask_login import LoginManager, login_required
-import os
+import os, requests
 
 
 def create_app():
@@ -18,6 +18,26 @@ def create_app():
     def load_user(user_id):
         pass # We will return to this later
     login_manager.init_app(app)
+
+    @app.route('/login/callback', methods=['GET'])
+    def login_callback():
+
+        # Use Flask's 'request' method to get 'code'
+        code = request.args.get('code')
+
+        # Step 1. Obtain access token by piping in 'code' from redirect
+        access_token_url = "https://github.com/login/oauth/access_token"
+        access_token_params = { 
+            "client_id": os.environ.get('CLIENT_ID'),
+            "client_secret": os.environ.get('CLIENT_SECRET'),
+            "code": code 
+            }
+        access_token_headers = {
+            "Accept": "application/json"
+            }
+        access_token = (requests.post(access_token_url, params=access_token_params, headers=access_token_headers)).json()["access_token"]
+        print(access_token)
+
 
     @app.route('/')
     @login_required 
