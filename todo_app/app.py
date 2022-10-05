@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from todo_app.data.mongoDB_items import MongoDBTasks
 from todo_app.viewmodel import ViewModel
 from todo_app.user import User
+from todo_app.flask_config import Config
 from flask_login import LoginManager, login_required, login_user
 import os, requests
 
@@ -9,6 +10,7 @@ import os, requests
 def create_app():
     app = Flask(__name__)
     mongodb_tasks = MongoDBTasks()
+    app.config.from_object(Config())
 
     login_manager = LoginManager()
     
