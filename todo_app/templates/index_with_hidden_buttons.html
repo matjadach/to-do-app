@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block title %}Mat's To-Do App{% endblock %}
+
+{% block content %}
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-5">To-Do App</h1>
+      <p class="lead" style = "text-align: right; font-style: italic">Life should not be reduced to a to do list</p>
+      <p class="lead" style = "text-align: right; font-style: italic"> ― Rasheed Ogunlaru</p>
+    </div>
+  </div>
+<!-- 1st Table to display Started/In progress items -->
+
+  <table class="table table-striped">
+    <caption style="caption-side: top; text-align: center; font-size: 40px; color: grey;"><b>STARTED:</b></caption>
+    <thead>
+      <tr>
+        <th scope="col" style="text-align: center;">Task ID</th>
+        <th scope="col" style="text-align: center;">Title</th>
+        <th scope="col" style="text-align: center;">Description</th>
+        <th scope="col" style="text-align: center;">Due By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in view_model.in_progress %}
+      <tr>
+        <th scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['id']}}</th>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['title']}}</td>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['desc']}}</td>
+        <td scope="row" style="text-align: center; color: rgb(44, 100, 255);">{{ task['due']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<!-- 2nd Table to display Not Started/To do items -->
+  <table class="table table-striped">
+    <caption style="caption-side: top; text-align: center; font-size: 40px; color: grey;"><b>NOT STARTED YET:</b></caption>
+    <thead>
+      <tr>
+        <th scope="col" style="text-align: center;">Task ID</th>
+        <th scope="col" style="text-align: center;">Title</th>
+        <th scope="col" style="text-align: center;">Description</th>
+        <th scope="col" style="text-align: center;">Due By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in view_model.not_started %}
+      <tr>
+        <th scope="row" style="text-align: center; color: red;">{{ task['id']}}</th>
+        <td scope="row" style="text-align: center; color: red;">{{ task['title']}}</td>
+        <td scope="row" style="text-align: center; color: red;">{{ task['desc']}}</td>
+        <td scope="row" style="text-align: center; color: red;">{{ task['due']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<!-- 3rd Table to display Completed/Done  items -->
+  <table class="table table-striped">
+    <caption style="caption-side: top; text-align: center; font-size: 40px; color: grey;"><b>COMPLETED: (IN THE LAST 24h)</b></caption>
+    <thead>
+      <tr>
+        <th scope="col" style="text-align: center;">Task ID</th>
+        <th scope="col" style="text-align: center;">Title</th>
+        <th scope="col" style="text-align: center;">Description</th>
+        <th scope="col" style="text-align: center;">Due By</th>
+        <th scope="col" style="text-align: center;">Completed on</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in view_model.recent_done_tasks %}
+      <tr>
+        <th scope="row" style="text-align: center; color:rgba(44, 75, 13, 0.651);"><s>{{ task['id']}}</s></th>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['title']}}</s></td>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['desc']}}</s></td>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['due']}}</s></td>
+        <td style="text-align: center; color:rgba(44, 75, 13, 0.651)"><s>{{ task['last_modified']}}</s></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a type="submit"  class="btn btn-primary btn-lg btn-block" style="margin: auto; background-color:#383c44; border-color: gold; border-width: 3px; margin-top: 15px;" href="/index_with_all_completed">See all the tasks you have completed</a>
+
+
+
+{% endblock %}
