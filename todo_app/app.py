@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from todo_app.data.mongoDB_items import MongoDBTasks
 from todo_app.viewmodel import ViewModel
-from flask_login import LoginManager, login_required
+from todo_app.user import User
+from flask_login import LoginManager, login_required, login_user
 import os, requests
 
 
@@ -37,6 +38,20 @@ def create_app():
             }
         access_token = (requests.post(access_token_url, params=access_token_params, headers=access_token_headers)).json()["access_token"]
         print(access_token)
+        # Step 2. Use access token to call user info endpoint and obtain 'id'
+        user_info_url = "https://api.github.com/user"
+        user_info_headers = {
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {access_token}"
+        }
+        id = (requests.get(user_info_url, headers=user_info_headers)).json()['id']
+        print(id)
+
+        user = User(user_id = id)
+        print(user)
+        login_user(user)
+
+        return redirect(url_for('index'))
 
 
     @app.route('/')
