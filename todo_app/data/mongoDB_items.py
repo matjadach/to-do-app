@@ -20,14 +20,14 @@ class Task:
 class MongoDBTasks:
     def __init__(self):
         # Store connection string as a secret
-        connection_string = os.environ.get("DB_CONNECTION_STRING")
+        connection_string = os.environ.get("CLUSTER_CONNECTION_STRING")
         client = pymongo.MongoClient(connection_string)
 
         # Create a collection called "tasks_collection" within "tasks_db" database, use "tasks" when referencing in the code below
 
         db_name = os.environ.get("TASKS_DB_NAME")
-        collection_name = os.environ.get("COLLECTION_NAME")
-        self.tasks = client[db_name][collection_name]
+        collection_name = os.environ.get("TASKS_COLLECTION_NAME")
+        self.tasks = client[f"{db_name}"][f"{collection_name}"]
 
     def get_all_tasks(self):
         tasks_list = []
