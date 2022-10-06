@@ -56,94 +56,90 @@ def create_app():
         login_user(user)
         return redirect(url_for('index'))
 
-    # def authorise_user(f):
-    #     @wraps(f)
-    #     def decorator(*args, **kwargs):
-    #         if current_user.role == 'admin':
-    #             return f(current_user, *args, **kwargs)
-    #     return decorator
+    def authorise_user(f):
+        @wraps(f)
+        def decorator(*args, **kwargs):
+            if current_user.role == 'admin':
+                return f(*args, **kwargs)
+            else:
+                return render_template('unauthorised.html'), 403
+        return decorator
+
 
     @app.route('/')
     @login_required
     def index():
         tasks = mongodb_tasks.get_all_tasks()
         task_view_model = ViewModel(tasks)
-        if current_user.role == 'admin':
+        print(current_user)
+        if current_user.is_anonymous: # For the integration test
+            return render_template('index.html', view_model = task_view_model)
+        elif current_user.role == 'admin':
             return render_template('index.html', view_model = task_view_model)
         else:
             return render_template('index_with_hidden_buttons.html', view_model = task_view_model)
 
     @app.route("/add", methods=['Post'])
     @login_required 
+    @authorise_user
     def add():
         title = request.form['title']
         desc = request.form['desc']
         dueby = request.form['dueby']
-        if current_user.role == 'admin':
-            mongodb_tasks.add_task(title, desc, due=dueby)
-            return redirect(url_for('index'))
-        else:
-            return render_template('unauthorised.html')
+        mongodb_tasks.add_task(title, desc, due=dueby)
+        return redirect(url_for('index'))
+
 
     @app.route("/done/<id>")
     @login_required 
+    @authorise_user
     def done(id):
-        if current_user.role == 'admin':
-            mongodb_tasks.mark_as_done(id)
-            return redirect(url_for('index'))
-        else:
-            return render_template('unauthorised.html')
+        mongodb_tasks.mark_as_done(id)
+        return redirect(url_for('index'))
+
 
     @app.route("/in_progress/<id>")
     @login_required 
+    @authorise_user
     def in_progress(id):
-        if current_user.role == 'admin':
-            mongodb_tasks.mark_as_in_progress(id)
-            return redirect(url_for('index'))
-        else:
-            return render_template('unauthorised.html')
+        mongodb_tasks.mark_as_in_progress(id)
+        return redirect(url_for('index'))
 
     @app.route("/not_started/<id>")
-    @login_required 
+    @login_required
+    @authorise_user
     def not_started(id):
-        if current_user.role == 'admin':
-            mongodb_tasks.mark_as_not_started(id)
-            return redirect(url_for('index'))
-        else:
-            return render_template('unauthorised.html')
+        mongodb_tasks.mark_as_not_started(id)
+        return redirect(url_for('index'))
 
     @app.route("/delete/<id>")
     @login_required 
+    @authorise_user
     def delete(id):
-        if current_user.role == 'admin':
-            mongodb_tasks.delete_task(id)
-            return redirect(url_for('index'))
-        else:
-            return render_template('unauthorised.html')
+        mongodb_tasks.delete_task(id)
+        return redirect(url_for('index'))
+
 
     @app.route("/update/<id>")
-    @login_required 
+    @login_required
+    @authorise_user
     def show_update_page(id):
-        if current_user.role == 'admin':
-            task = mongodb_tasks.get_task(id)
-            return render_template('update.html', id = id, task = task)
-        else:
-            return render_template('unauthorised.html')
+        task = mongodb_tasks.get_task(id)
+        return render_template('update.html', id = id, task = task)
         
     @app.route("/update/<id>/submit", methods = ['POST'])
-    @login_required 
+    @login_required
+    @authorise_user
     def update_task(id):
         new_title = request.form['title']
         new_desc = request.form['desc']
         new_due = request.form['due']
-        if current_user.role == 'admin':
-            mongodb_tasks.update_task(id, new_title, new_desc, new_due)
-            return index()
-        else:
-            return render_template('unauthorised.html')
+        mongodb_tasks.update_task(id, new_title, new_desc, new_due)
+        return index()
+
 
     @app.route('/index_with_all_completed')
-    @login_required 
+    @login_required
     def index_with_all_completed():
         tasks = mongodb_tasks.get_all_tasks()
         task_view_model = ViewModel(tasks)
