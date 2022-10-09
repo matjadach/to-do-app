@@ -86,6 +86,7 @@ jobs:
 
       - name: Terraform apply
         run: |
+          cd infrastructure/
           terraform apply --auto-approve
         env:
           TF_VAR_oauth_client_id: ${{ secrets.OAUTH_CLIENT_ID }}
