@@ -70,10 +70,22 @@ jobs:
     if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-12'}}
     steps:
 
+      - name: Checkout repo content 
+        uses: actions/checkout@v2
+
       - name: Terraform init
         run: |
+          ls
           pwd
-          ls -R
+          cd ../
+          pwd
+          ls
+          cd ../
+          pwd
+          ls
+          cd ../
+          pwd
+          ls
       # cd .. && cd infrastructure/
       # terraform init
         env:
