@@ -74,8 +74,8 @@ jobs:
         run: |
           pwd
           ls -R
-          cd .. && cd infrastructure/
-          terraform init
+      # cd .. && cd infrastructure/
+      # terraform init
         env:
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
