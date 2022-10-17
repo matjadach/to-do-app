@@ -40,7 +40,6 @@ def create_app():
             "Accept": "application/json"
             }
         access_token = (requests.post(access_token_url, params=access_token_params, headers=access_token_headers)).json()["access_token"]
-        print(access_token)
         # Step 2. Use access token to call user info endpoint and obtain 'id'
         user_info_url = "https://api.github.com/user"
         user_info_headers = {
@@ -48,8 +47,6 @@ def create_app():
             "Authorization": f"Bearer {access_token}"
         }
         id = (requests.get(user_info_url, headers=user_info_headers)).json()['id']
-        response = requests.get(user_info_url, headers=user_info_headers).json()
-        print(response)
 
         # Step 3. Create an instance of User using 'id' from Step 2 and login that user.
         user = User(user_id=id)
@@ -72,9 +69,7 @@ def create_app():
         tasks = mongodb_tasks.get_all_tasks()
         task_view_model = ViewModel(tasks)
         print(current_user)
-        if current_user.is_anonymous: # For the integration test
-            return render_template('index.html', view_model = task_view_model)
-        elif current_user.role == 'admin':
+        if current_user.is_anonymous or current_user.role == 'admin':
             return render_template('index.html', view_model = task_view_model)
         else:
             return render_template('index_with_hidden_buttons.html', view_model = task_view_model)
