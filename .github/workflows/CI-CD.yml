@@ -19,7 +19,7 @@ jobs:
     steps:
 
     - name: Checkout repo content 
-      uses: actions/checkout@v2
+      uses: actions/checkout
 
     - name: Create .env file # docker-compose looks for .env file even though it is not required to spin up the test container
       run: |
@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Cache Docker layers
-        uses: satackey/action-docker-layer-caching@v0.0.11
+        uses: satackey/action-docker-layer-caching
         continue-on-error: true
       
       - name: Build and push
@@ -78,7 +78,7 @@ jobs:
     steps:
 
       - name: Checkout repo content 
-        uses: actions/checkout@v2
+        uses: actions/checkout
 
       - name: Terraform init
         run: |
