@@ -44,7 +44,7 @@ jobs:
     name: Login to DockerHub, build an image and publish it
     runs-on: ubuntu-latest
     needs: build
-    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-12'}}
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-13'}}
     steps:
 
       - name: Login to DockerHub
@@ -67,7 +67,7 @@ jobs:
     name: Spin up / Reconfigure the infrastructure.
     runs-on: ubuntu-latest
     needs: publish
-    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-12'}}
+    if: ${{github.event_name == 'push' && github.ref == 'refs/heads/exercise-13'}}
     env:
       ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
