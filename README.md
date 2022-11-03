@@ -182,7 +182,7 @@ Go to http://{Your web app name}.azurewebsites.net/
 
 ## Provisioning Infrastructure
 
-The infrastructure for this app is managed via terraform.
+This app's infrastructure is managed via terraform.
 
 Navigate to 'infrastructure' folder in your terminal and run:
 
@@ -190,11 +190,11 @@ Navigate to 'infrastructure' folder in your terminal and run:
 terraform apply
 ```
 
-Analyse the terraform plan and if you are happy with it enter 'Yes'
+Analyse the terraform plan and if you are happy with it enter 'Yes'.
 
 ## Logging
 
-Application supports logging which is displayed in the console but also sending logs to Loggly is supported. To send those logs follow the steps below.
+Application logging is displayed in the console however there is an option to send the logs to Loggly. To send those logs follow the steps below.
 
 1. Sign up to Loggly using this link: https://www.loggly.com/
 2. Obtain a token from Loggly

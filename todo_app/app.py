@@ -25,6 +25,7 @@ def create_app():
     text_formatter = logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
     console_handler.setFormatter(text_formatter)
     app.logger.addHandler(console_handler)
+    app.logget.setLevel(app.config['LOG_LEVEL'])
     if app.config['LOGGLY_TOKEN'] is not None:
         https_handler = HTTPSHandler(f"https://logs-01.loggly.com/inputs/{app.config['LOGGLY_TOKEN']}/tag/todo-app")
         json_formatter = jsonlogger.JsonFormatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")

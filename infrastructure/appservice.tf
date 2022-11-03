@@ -24,6 +24,7 @@ resource "azurerm_linux_web_app" "main" {
     "TASKS_COLLECTION_NAME"      = var.tasks_collection_name
     "TASKS_DB_NAME"              = var.tasks_db_name
     "LOGGLY_TOKEN"               = var.loggly_token
+    "LOG_LEVEL"                  = "DEBUG"
   }
 
   site_config {
