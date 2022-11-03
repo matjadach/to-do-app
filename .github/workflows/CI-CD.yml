@@ -96,6 +96,7 @@ jobs:
           TF_VAR_prefix: ${{ secrets.PREFIX }}
           TF_VAR_secret_key: ${{ secrets.SECRET_KEY }}
           TF_VAR_flask_env: ${{ secrets.FLASK_ENV }}
+          TF_VAT_loggly_token: ${{ secrets.LOGGLY_TOKEN}}
 
       - name: Deploy the latest version of the image
         run: |

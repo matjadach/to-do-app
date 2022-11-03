@@ -4,8 +4,10 @@ from todo_app.viewmodel import ViewModel
 from todo_app.user import User
 from todo_app.flask_config import Config
 from flask_login import LoginManager, login_required, login_user, current_user
-import os, requests
+import os, requests, logging
 from functools import wraps
+from loggly.handlers import HTTPSHandler
+from pythonjsonlogger import jsonlogger
 
 
 def create_app():
@@ -14,6 +16,20 @@ def create_app():
     app.config.from_object(Config())
     login_manager = LoginManager()
 
+    #Logging
+
+    logger = logging.getLogger('todo_app')
+    logger.setLevel(logging.DEBUG)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+    text_formatter = logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+    console_handler.setFormatter(text_formatter)
+    app.logger.addHandler(console_handler)
+    if app.config['LOGGLY_TOKEN'] is not None:
+        https_handler = HTTPSHandler(f"https://logs-01.loggly.com/inputs/{app.config['LOGGLY_TOKEN']}/tag/todo-app")
+        json_formatter = jsonlogger.JsonFormatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+        https_handler.setFormatter(json_formatter)
+        app.logger.addHandler(https_handler)
     
     @login_manager.unauthorized_handler
     def unauthenticated():
@@ -39,7 +55,11 @@ def create_app():
         access_token_headers = {
             "Accept": "application/json"
             }
+        response = requests.post(access_token_url, params=access_token_params, headers=access_token_headers).json()
+        if response.status_code != 200:
+            app.logger.error("There was an issue when obtaining OAuth access token.")
         access_token = (requests.post(access_token_url, params=access_token_params, headers=access_token_headers)).json()["access_token"]
+
         # Step 2. Use access token to call user info endpoint and obtain 'id'
         user_info_url = "https://api.github.com/user"
         user_info_headers = {
@@ -50,6 +70,7 @@ def create_app():
 
         # Step 3. Create an instance of User using 'id' from Step 2 and login that user.
         user = User(user_id=id)
+        app.logger.info(f"User with ID: {user.user_id} is now logged in.")
         login_user(user)
         return redirect(url_for('index'))
 
@@ -57,8 +78,10 @@ def create_app():
         @wraps(f)
         def decorator(*args, **kwargs):
             if current_user.role == 'admin':
+                logger.info("Succssfully authorised as admin user.")
                 return f(*args, **kwargs)
             else:
+                logger.warning("The current user does not have the permissions to view this page.")
                 return render_template('unauthorised.html'), 403
         return decorator
 
@@ -68,7 +91,6 @@ def create_app():
     def index():
         tasks = mongodb_tasks.get_all_tasks()
         task_view_model = ViewModel(tasks)
-        print(current_user)
         if current_user.is_anonymous or current_user.role == 'admin':
             return render_template('index.html', view_model = task_view_model)
         else:
@@ -82,6 +104,7 @@ def create_app():
         desc = request.form['desc']
         dueby = request.form['dueby']
         mongodb_tasks.add_task(title, desc, due=dueby)
+        app.logger.info(f"Task: '{title}' has been added.")
         return redirect(url_for('index'))
 
 
@@ -90,6 +113,7 @@ def create_app():
     @authorise_user
     def done(id):
         mongodb_tasks.mark_as_done(id)
+        app.logger.info(f"Task with ID: {id} has been marked as 'done' by the user with ID: {current_user.user_id}.")
         return redirect(url_for('index'))
 
 
@@ -98,6 +122,7 @@ def create_app():
     @authorise_user
     def in_progress(id):
         mongodb_tasks.mark_as_in_progress(id)
+        app.logger.info(f"Task with ID: {id} has been marked as 'in progress' by the user with ID: {current_user.user_id}.")
         return redirect(url_for('index'))
 
     @app.route("/not_started/<id>")
@@ -105,6 +130,7 @@ def create_app():
     @authorise_user
     def not_started(id):
         mongodb_tasks.mark_as_not_started(id)
+        app.logger.info(f"Task with ID: {id} has been marked as 'not started' by the user with ID: {current_user.user_id}.")
         return redirect(url_for('index'))
 
     @app.route("/delete/<id>")
@@ -112,6 +138,7 @@ def create_app():
     @authorise_user
     def delete(id):
         mongodb_tasks.delete_task(id)
+        app.logger.info(f"Task with ID: {id} has been deleted by the user with ID: {current_user.user_id}.")
         return redirect(url_for('index'))
 
 
@@ -130,6 +157,7 @@ def create_app():
         new_desc = request.form['desc']
         new_due = request.form['due']
         mongodb_tasks.update_task(id, new_title, new_desc, new_due)
+        app.logger.info(f"Task with ID: {id} has been updated. Its new title is: '{new_title}', new description: '{new_desc}' and it is now due by '{new_due}'. This task has been updated by the user with ID: {current_user.user_id}.")
         return index()
 
 

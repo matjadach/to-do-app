@@ -30,3 +30,6 @@ variable "secret_key" {
   sensitive = true
 }
 
+variable "loggly_token" {
+  sensitive = true
+}

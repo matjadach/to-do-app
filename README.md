@@ -180,3 +180,28 @@ $ az webapp config appsettings set -g {Your resource group name eg. test-resourc
 
 Go to http://{Your web app name}.azurewebsites.net/
 
+## Provisioning Infrastructure
+
+The infrastructure for this app is managed via terraform.
+
+Navigate to 'infrastructure' folder in your terminal and run:
+
+```
+terraform apply
+```
+
+Analyse the terraform plan and if you are happy with it enter 'Yes'
+
+## Logging
+
+Application supports logging which is displayed in the console but also sending logs to Loggly is supported. To send those logs follow the steps below.
+
+1. Sign up to Loggly using this link: https://www.loggly.com/
+2. Obtain a token from Loggly
+   
+Find the icon for "Logs" in the lefthand menu. Under this, select "Source Setup". Then, on the tabs along the top of the page, select "Customer Tokens". Add a new customer token.
+
+3. Add the token as an app setting to your app using 'LOGGLY_TOKEN' key.
+4. View logs in Loggly.
+
+Go to Loggly and navigate to Logs > Log Explorer. Set the time range and click Search. You should see your logs.
