@@ -23,6 +23,8 @@ resource "azurerm_linux_web_app" "main" {
     "SECRET_KEY"                 = var.secret_key
     "TASKS_COLLECTION_NAME"      = var.tasks_collection_name
     "TASKS_DB_NAME"              = var.tasks_db_name
+    "LOGGLY_TOKEN"               = var.loggly_token
+    "LOG_LEVEL"                  = var.log_level
   }
 
   site_config {

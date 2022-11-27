@@ -87,6 +87,17 @@ MarkupSafe = ">=0.23"
 i18n = ["Babel (>=0.8)"]
 
 [[package]]
+name = "loggly-python-handler"
+version = "1.0.1"
+description = "Python logging handler that sends messages to Loggly"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+requests-futures = ">=1.0.0"
+
+[[package]]
 name = "markupsafe"
 version = "1.1.1"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -157,6 +168,14 @@ python-versions = ">=3.7"
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "python-json-logger"
+version = "2.0.4"
+description = "A python library adding a json log formatter"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
 name = "requests"
 version = "2.26.0"
 description = "Python HTTP for Humans."
@@ -173,6 +192,17 @@ urllib3 = ">=1.21.1,<1.27"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
+
+[[package]]
+name = "requests-futures"
+version = "1.0.0"
+description = "Asynchronous Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+requests = ">=1.2.0"
 
 [[package]]
 name = "sentinels"
@@ -210,7 +240,7 @@ dev = ["sphinx-issues", "pallets-sphinx-themes", "sphinx", "tox", "coverage", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "7c7588b326cecb6b3067fa086996882cc7c09d444dd836c84cea2905ef84bfd7"
+content-hash = "4a9edd8fddad625590d8d4ea2b2333bd92e565dab28c0bdcdcd7fa37ab67d3c5"
 
 [metadata.files]
 certifi = []
@@ -221,13 +251,16 @@ flask-login = []
 idna = []
 itsdangerous = []
 jinja2 = []
+loggly-python-handler = []
 markupsafe = []
 mongomock = []
 packaging = []
 pymongo = []
 pyparsing = []
 python-dotenv = []
+python-json-logger = []
 requests = []
+requests-futures = []
 sentinels = []
 urllib3 = []
 werkzeug = []
