@@ -214,8 +214,8 @@ docker build --target production --tag todo-app:prod .
 ```
 2. Create a new OAuth App on GitHub with redirect URLs matching the following:
 
-Homepage URL: 'http://localhost:7080/'
-Authorization callback URL: 'http://localhost:7080/login/callback'
+- Homepage URL: http://localhost:7080/
+- Authorization callback URL: http://localhost:7080/login/callback
 
 Create a new Client Secret and make a note of it - you will need it in the next step.
 
@@ -236,4 +236,4 @@ kubectl create secret generic loggly --from-literal=token='<YOUR LOGGLY TOKEN>'
 kubectl port-forward service/module-14 7080:80
 ```
 
-4. Go to 'http://localhost:7080/' and confirm your app is up and running.
+4. Go to http://localhost:7080/ and confirm your app is up and running.
