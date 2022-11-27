@@ -205,3 +205,35 @@ Find the icon for "Logs" in the lefthand menu. Under this, select "Source Setup"
 4. View logs in Loggly.
 
 Go to Loggly and navigate to Logs > Log Explorer. Set the time range and click Search. You should see your logs.
+
+## Running the app on local Kubernetes cluster (vie minikube)
+
+1. Build the latest image locally by running the following command (from root directory of the repo):
+```
+docker build --target production --tag todo-app:prod .
+```
+2. Create a new OAuth App on GitHub with redirect URLs matching the following:
+
+Homepage URL: 'http://localhost:7080/'
+Authorization callback URL: 'http://localhost:7080/login/callback'
+
+Create a new Client Secret and make a note of it - you will need it in the next step.
+
+3. Navigate to kube_infra directory and run the following commands in your terminal to spin up minikube cluster and your app:
+
+```
+minikube start
+
+minikube image load todo-app:prod
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+kubectl create secret generic auth-secrets --from-literal=client-id='<YOUR OAUTH APP CLIENT ID>' --from-literal=client-secret='<YOUR OAUTH APP CLIENT SECRET>' --from-literal=admin-id='<YOUR OAUTH APP ADMIN ID>'
+kubectl create secret generic db-secrets --from-literal=connection-string=='<CONNECTION STRING TO YOUR DB>' --from-literal=db-name='<YOUR DB NAME>' --from-literal=collection-name='<YOUR COLLECTION NAME>'
+kubectl create secret generic loggly --from-literal=token='<YOUR LOGGLY TOKEN>'
+
+kubectl port-forward service/module-14 7080:80
+```
+
+4. Go to 'http://localhost:7080/' and confirm your app is up and running.
