@@ -16,5 +16,5 @@ class Config:
             raise ValueError("No CLIENT_SECRET defined. Did you follow the README file?")
 
         self.LOGIN_DISABLED = os.environ.get("LOGIN_DISABLED")
-        self.LOG_LEVEL = os.environ.get("LOG_LEVEL")
+        self.LOG_LEVEL = os.environ.get("LOG_LEVEL", "DEBUG")
         self.LOGGLY_TOKEN = os.environ.get("LOGGLY_TOKEN")
