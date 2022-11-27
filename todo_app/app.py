@@ -17,9 +17,6 @@ def create_app():
     login_manager = LoginManager()
 
     #Logging
-
-    logger = logging.getLogger('todo_app')
-    logger.setLevel(logging.DEBUG)
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
     text_formatter = logging.Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
