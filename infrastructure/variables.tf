@@ -33,3 +33,7 @@ variable "secret_key" {
 variable "loggly_token" {
   sensitive = true
 }
+
+variable "log_level" {
+  default = "DEBUG"
+}
