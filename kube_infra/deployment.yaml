@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: module-14
+spec:
+  selector:
+    matchLabels:
+      app: module-14
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: module-14
+    spec:
+      containers:
+      - name: todo-app
+        image: todo-app:prod
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Never
+        env:
+        - name: FLASK_APP
+          value: "todo_app/app"
+        - name: FLASK_ENV
+          value: "production"
+        - name: SECRET_KEY
+          value: "secret-key"
+        - name: CLUSTER_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: connection-string
+              optional: false
+        - name: TASKS_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: db-name
+              optional: false
+        - name: TASKS_COLLECTION_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: collection-name
+              optional: false
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: client-id
+              optional: false
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: client-secret
+              optional: false
+        - name: ADMIN_ID
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: admin-id
+              optional: false
+        - name: LOG_LEVEL
+          value: "DEBUG"
+        - name: LOGGLY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: loggly
+              key: token
+              optional: false
